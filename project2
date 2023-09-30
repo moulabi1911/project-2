@@ -1,0 +1,44 @@
+
+STEP-1:
+
+Create VPC Peering between two VPCs:
+
+* Login to AWS console. Go to VPC service.
+* Create 2 VPCs.
+* Create 2 instances. 
+* Naviagte to VPC --> Click on Peering connection --> Create peering connection --> Give name --> Select a local vpc to peer with: select vpc which we created --> My account --> VPC ID: select another instance --> Create peering.
+* Select peering --> Actions --> Accept request.
+* Modify the Route tables. 
+
+
+
+STEP-2:
+
+Bastion Host [ec2 instance] need to be created:
+
+* Login to AWS console --> Launch instance --> give name --> AMI --> Instance type-t2.micro --> Give key pair --> Network settings: Click on edit --> In the security group rule give ssh (port 22) --> Launch instance.
+ 
+* Connect to the terminal, give the command
+           #ssh ec2-user@65.0.179.210 -i .\bastion-access.pem
+here 65.0.179.210 is public ip address
+
+
+STEP-3:
+
+Access the RDS Instance from the Bastion Machine:
+
+* Login to AWS console.
+* Naviagte to VPC --> Create one vpc, one subnet and one route table.
+* Go to ec2 --> Launch one instance, while creating instance select vpc and subnet which we created in VPC and security group rule is ssh (port 22).
+   -copy ip public ip address
+give the command  #ssh -i private-subnet-demo.pem -l ec2-user 54.81.217.121  
+                  #ls
+
+* Naviagte to RDS --> Click on subnet groups --> give name --> vpc-select vpc --> subnets- availability zones: select 1a & 1b then select subnets.
+* Go to databases --> standard create --> Amazon Aurora -->  Amazon Aurora PostgreSQL --> Templates: Dev/Test --> give password --> DB instance class- burstable classes --> availability &durability - Dont create an Aurora replica --> DB subnet group- private group --> select vpc and availability zone --> create database
+* Select database, edit inbound  rule give PostgreSQL --> save.
+in the terminal,
+give the command  #ssh -i private-subnet-demo.pem -l ec2-user 54.81.217.121  
+
+
+
